@@ -10,7 +10,7 @@ The application is deployed and accessible at [this link](https://65ad12e57f62d8
 
 ### Multi-Step Form
 
-- The form comprises a minimum of three steps, each with a unique set of form fields.
+- The form comprises of three steps, each with a unique set of form fields.
 - Users can navigate between steps, moving back to the previous step or proceeding to the next one.
 
 ### Form Fields
