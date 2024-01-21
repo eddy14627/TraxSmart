@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { StepperContext } from "../../Contexts/StepperContext";
+import { personalValidateInput } from "../Utils/PersonalInfoValidation";
 
 const PersonalInfo = () => {
+  // Destructuring context values
   const {
     userData,
     setUserData,
@@ -10,46 +12,12 @@ const PersonalInfo = () => {
     setIsErrors,
   } = useContext(StepperContext);
 
+  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
-    validateInput(name, value);
-  };
-
-  const validateInput = (name, value) => {
-    let errors = { ...validationErrors };
-
-    switch (name) {
-      case "fullname":
-        errors.fullname =
-          value.length < 3 ? "Minimum length is 3 characters" : "";
-        break;
-      case "email":
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        errors.email = emailRegex.test(value) ? "" : "Invalid email format";
-        break;
-      case "dob":
-        errors.dob =
-          isValidDate(value) && isDateBeforeToday(value)
-            ? ""
-            : "Invalid date format or date is not before today";
-        break;
-      default:
-        break;
-    }
-
-    setValidationErrors(errors);
-  };
-
-  const isValidDate = (dateString) => {
-    const regex = /^\d{4}-\d{2}-\d{2}$/;
-    return regex.test(dateString);
-  };
-
-  const isDateBeforeToday = (dateString) => {
-    const today = new Date();
-    const selectedDate = new Date(dateString);
-    return selectedDate < today;
+    // Call utility function for validation
+    personalValidateInput(name, value, validationErrors, setValidationErrors);
   };
 
   useEffect(() => {
@@ -58,14 +26,14 @@ const PersonalInfo = () => {
       Object.keys(userData).length >= 3 &&
       Object.values(userData).every((val) => val !== "");
 
-    const hasErrors = Object.keys(validationErrors).some(
-      (key) => validationErrors[key] !== ""
-    );
+    const hasErrors = Object.values(validationErrors).some(Boolean);
 
     setIsErrors(!allFieldsFilled || hasErrors);
-  }, [userData]);
+  }, [userData, validationErrors, setIsErrors]);
+
   return (
     <div className="flex flex-col">
+      {/* Full Name Input */}
       <div className="w-full mx-2 flex-1">
         <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase">
           Full Name
@@ -75,7 +43,7 @@ const PersonalInfo = () => {
             onChange={handleChange}
             value={userData["fullname"] || ""}
             name="fullname"
-            placeholder="full name"
+            placeholder="Full Name"
             className={`p-1 px-2 outline-none w-full text-gray-800 ${
               validationErrors.fullname ? "border-red-500" : "border-gray-300"
             }`}
@@ -87,6 +55,8 @@ const PersonalInfo = () => {
           </p>
         )}
       </div>
+
+      {/* Email Address Input */}
       <div className="w-full mx-2 flex-1">
         <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase">
           Email Address
@@ -107,6 +77,8 @@ const PersonalInfo = () => {
           <p className="text-red-500 text-xs mt-1">{validationErrors.email}</p>
         )}
       </div>
+
+      {/* Date of Birth Input */}
       <div className="w-full mx-2 flex-1">
         <div className="font-bold h-6 mt-3 text-gray-500 text-xs leading-8 uppercase">
           Date of Birth

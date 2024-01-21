@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { StepperContext } from "../../Contexts/StepperContext";
-import { AccountValidateInput } from "../Utils/Validation";
+import { AccountValidateInput } from "../Utils/AccountValidation";
 
 const AccountSetup = () => {
   const {
@@ -14,7 +14,6 @@ const AccountSetup = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
-    // validateInput(name, value);
     AccountValidateInput(
       name,
       value,
@@ -22,29 +21,6 @@ const AccountSetup = () => {
       setValidationErrors,
       userData
     );
-  };
-
-  const validateInput = (name, value) => {
-    let errors = { ...validationErrors };
-
-    switch (name) {
-      case "username":
-        errors.username =
-          value.length < 3 ? "Minimum length is 3 characters" : "";
-        break;
-      case "password":
-        errors.password =
-          value.length < 6 ? "Minimum length is 6 characters" : "";
-        break;
-      case "confirmPassword":
-        errors.confirmPassword =
-          value !== userData.password ? "Passwords do not match" : "";
-        break;
-      default:
-        break;
-    }
-
-    setValidationErrors(errors);
   };
 
   useEffect(() => {

@@ -1,9 +1,9 @@
 import React from "react";
 
 const StepperControl = ({ handleClick, currentStep, steps, errors }) => {
-  console.log(errors);
   return (
     <div className="container flex justify-around mt-4 mb-8">
+      {/* Back Button */}
       <button
         onClick={() => handleClick("back")}
         className={`bg-white text-slate-400 uppercase py-2 px-4 rounded-xl font-semibold cursor-pointer border-2 border-slate-300 hover:bg-slate-700 hover:text-white transition duration-200 ease-in-out ${
@@ -12,11 +12,15 @@ const StepperControl = ({ handleClick, currentStep, steps, errors }) => {
       >
         Back
       </button>
+
+      {/* Next/Confirm Button */}
       <button
         onClick={() => handleClick("next")}
         disabled={errors} // Disable the button if there are validation errors
         className={`uppercase py-2 px-4 rounded-xl font-semibold cursor-pointer hover:bg-slate-700 hover:text-white transition duration-200 ease-in-out ${
-          errors ? "bg-gray-400 text-gray-700" : "bg-green-500 text-white"
+          errors
+            ? "bg-gray-400 text-gray-700 cursor-not-allowed" // Disable styling
+            : "bg-green-500 text-white"
         }`}
       >
         {currentStep === steps.length ? "Confirm" : "Next"}

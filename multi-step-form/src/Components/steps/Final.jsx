@@ -1,14 +1,10 @@
 import React from "react";
-import { useContext } from "react";
-import { StepperContext } from "../../Contexts/StepperContext";
 
 const Final = () => {
   return (
     <div className="container md:mt-10">
       <div className="flex flex-col items-center">
-        <div className="text-green-400">
-          <svg></svg>
-        </div>
+        <div className="text-green-400"></div>
         <div className="mt-3 text-xl font-semibold uppercase text-green-500">
           Congratulations!
         </div>
